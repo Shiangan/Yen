@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互助会保险</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        header { background-color: #5cb85c; color: white; padding: 20px; text-align: center; }
+        section { padding: 20px; max-width: 800px; margin: auto; background-color: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+        label { display: block; margin-top: 10px; }
+        input, select, button { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background-color: #5cb85c; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #4cae4c; }
+        .result { margin-top: 20px; font-weight: bold; }
+        .info { margin-top: 20px; font-size: 0.9em; color: #777; }
+        footer { text-align: center; padding: 10px; background-color: #333; color: white; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>欢迎来到互助会保险</h1>
+        <p>为被拒保族提供的专属保障</p>
+    </header>
+    <section>
+        <h2>我们的优势</h2>
+        <p>我们的互助会保险旨在帮助那些在传统保险市场上受到拒绝的人群。我们提供灵活的缴费选项、确保保障，且即使未缴满保费也可获得收益。</p>
+        
+        <h2>在线收益计算器</h2>
+        <label for="monthlyPayment">月缴费金额 ($): </label>
+        <input type="number" id="monthlyPayment" required>
+        
+        <label for="months">加入互助会的时间 (月): </label>
+        <input type="number" id="months" required>
+        
+        <label for="deaths">身故人次: </label>
+        <input type="number" id="deaths" required>
+        
+        <label for="members">有效会员人数: </label>
+        <input type="number" id="members" required>
+        
+        <label for="fullPayment">是否缴满金额 (是/否): </label>
+        <select id="fullPayment" required>
+            <option value="yes">是</option>
+            <option value="no">否</option>
+        </select>
+        
+        <button onclick="calculate()">计算潜在收益</button>
+        
+        <div class="result" id="result"></div>
+        <div class="info">
+            <p>注意: 若生效未满30日内身故，僅退回契約作業費 $2000 及已繳互助費。</p>
+            <p>若缴满规定金额，每年可获得祝寿金: $3,000。</p>
+        </div>
+    </section>
+    
+    <footer>
+        <p>联系我们: <a href="https://line.me/R/ti/p/%40your_line_id" style="color: white;">Line: @your_line_id</a></p>
+        <p>© 2024 互助会保险 | 版权所有</p>
+    </footer>
+    
+    <script>
+        function calculate() {
+            const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value);
+            const months = parseInt(document.getElementById('months').value);
+            const deaths = parseInt(document.getElementById('deaths').value);
+            const members = parseInt(document.getElementById('members').value);
+            const fullPayment = document.getElementById('fullPayment').value;
+
+            const entryFee = 2000; // 契约作业费
+            const systemFee = 1500; // 系统服务费
+
+            const totalPaid = monthlyPayment * months; // 总缴费
+            const mutualFee = (deaths * 300000) / members; // 互助费
+            const refund = totalPaid - entryFee - mutualFee; // 预计退款
+
+            // 祝寿金逻辑
+            const anniversaryBonus = (fullPayment === "yes") ? 3000 : 0; // 仅当缴满时才有祝寿金
+
+            document.getElementById('result').innerText = 
+                `预计退款金额: $${refund.toFixed(2)} (祝寿金: $${anniversaryBonus})`;
+        }
+    </script>
+</body>
+</html>
