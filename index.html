@@ -3,84 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>互助会保险</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
-        header { background-color: #5cb85c; color: white; padding: 20px; text-align: center; }
-        section { padding: 20px; max-width: 800px; margin: auto; background-color: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1, h2 { color: #333; }
-        label { display: block; margin-top: 10px; }
-        input, select, button { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; }
-        button { background-color: #5cb85c; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #4cae4c; }
-        .result { margin-top: 20px; font-weight: bold; }
-        .info { margin-top: 20px; font-size: 0.9em; color: #777; }
-        footer { text-align: center; padding: 10px; background-color: #333; color: white; margin-top: 20px; }
-    </style>
+    <meta name="description" content="安家30專案，結合禮儀服務，享30萬理賠和終身保障。">
+    <meta name="keywords" content="安家30, 互助保險, 禮儀服務, 30萬理賠, 終身保障">
+    <title>安家30專案 - 全面保障與禮儀服務</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>欢迎来到互助会保险</h1>
-        <p>为被拒保族提供的专属保障</p>
+        <h1>安家30專案 - 終身保障與禮儀服務</h1>
+        <p>透過安家30，您可享受每月低繳費，結合高品質禮儀服務，給家人更好的保障。</p>
+        <a href="line://ti/p/@yourlineid" class="cta-button">立即聯繫我們</a>
     </header>
-    <section>
-        <h2>我们的优势</h2>
-        <p>我们的互助会保险旨在帮助那些在传统保险市场上受到拒绝的人群。我们提供灵活的缴费选项、确保保障，且即使未缴满保费也可获得收益。</p>
+
+    <section id="services">
+        <h2>保險與禮儀服務</h2>
+        <ul>
+            <li>每月繳費 $3000 - $3600</li>
+            <li>身故理賠 30萬元</li>
+            <li>中式禮儀 $16.8萬，西式禮儀 $13.8萬</li>
+            <li>繳滿三年理賠30萬元</li>
+            <li>每年享3000元祝壽金</li>
+        </ul>
+    </section>
+
+    <section id="calculator">
+    <h2>试算器</h2>
+    <form id="calcForm">
+        <label for="months">输入缴费月数：</label>
+        <input type="number" id="months" placeholder="例如 36" required>
         
-        <h2>在线收益计算器</h2>
-        <label for="monthlyPayment">月缴费金额 ($): </label>
-        <input type="number" id="monthlyPayment" required>
-        
-        <label for="months">加入互助会的时间 (月): </label>
-        <input type="number" id="months" required>
-        
-        <label for="deaths">身故人次: </label>
-        <input type="number" id="deaths" required>
-        
-        <label for="members">有效会员人数: </label>
-        <input type="number" id="members" required>
-        
-        <label for="fullPayment">是否缴满金额 (是/否): </label>
-        <select id="fullPayment" required>
-            <option value="yes">是</option>
-            <option value="no">否</option>
+        <label for="funeral">是否选择使用礼仪服务？</label>
+        <select id="funeral" required>
+            <option value="none">不使用礼仪服务</option>
+            <option value="chinese">中式礼仪</option>
+            <option value="western">西式礼仪</option>
         </select>
         
-        <button onclick="calculate()">计算潜在收益</button>
+        <button type="submit">计算收益</button>
+    </form>
+    <p id="result"></p>
+</section>
+
+<script>
+    document.getElementById('calcForm').addEventListener('submit', function (e) {
+        e.preventDefault();
         
-        <div class="result" id="result"></div>
-        <div class="info">
-            <p>注意: 若生效未满30日内身故，僅退回契約作業費 $2000 及已繳互助費。</p>
-            <p>若缴满规定金额，每年可获得祝寿金: $3,000。</p>
-        </div>
-    </section>
+        const months = parseInt(document.getElementById('months').value);
+        const perMonth = 3500;
+        const totalPaid = months * perMonth;
+        const funeralType = document.getElementById('funeral').value;
+        let resultText = "";
+
+        if (months < 36) {
+            if (funeralType === "chinese") {
+                resultText = `您已缴费 ${totalPaid} 元，未满三年，若身故可退还已缴金额，并获得中式礼仪慰问金 2万元。`;
+            } else if (funeralType === "western") {
+                resultText = `您已缴费 ${totalPaid} 元，未满三年，若身故可退还已缴金额，并获得西式礼仪慰问金 1.5万元。`;
+            } else {
+                resultText = `您已缴费 ${totalPaid} 元，未满三年，若身故可退还已缴金额。`;
+            }
+        } else if (months >= 36 && totalPaid < 300000) {
+            const benefitAmount = 300000 - totalPaid;
+            if (funeralType === "chinese") {
+                resultText = `恭喜！您已缴 ${totalPaid} 元。若继续缴费，您将在满期时获得 ${benefitAmount} 元理赔，并享 30万身故赔偿（扣税）。若使用中式礼仪，可额外获得慰问金 2万元。`;
+            } else if (funeralType === "western") {
+                resultText = `恭喜！您已缴 ${totalPaid} 元。若继续缴费，您将在满期时获得 ${benefitAmount} 元理赔，并享 30万身故赔偿（扣税）。若使用西式礼仪，可额外获得慰问金 1.5万元。`;
+            } else {
+                resultText = `恭喜！您已缴 ${totalPaid} 元。若继续缴费，您将在满期时获得 ${benefitAmount} 元理赔，并享 30万身故赔偿，需扣税。`;
+            }
+        } else if (totalPaid >= 300000) {
+            if (funeralType === "chinese") {
+                resultText = `恭喜！您已缴满 ${totalPaid} 元，不再需要继续缴费。您将享有每年祝寿金 3000 元，并在满期时获得 30万理赔（扣税）。若使用中式礼仪，可额外获得慰问金 2万元。`;
+            } else if (funeralType === "western") {
+                resultText = `恭喜！您已缴满 ${totalPaid} 元，不再需要继续缴费。您将享有每年祝寿金 3000 元，并在满期时获得 30万理赔（扣税）。若使用西式礼仪，可额外获得慰问金 1.5万元。`;
+            } else {
+                resultText = `恭喜！您已缴满 ${totalPaid} 元，不再需要继续缴费。您将享有每年祝寿金 3000 元，并在满期时获得 30万理赔，需扣税。`;
+            }
+        }
+
+        document.getElementById('result').textContent = resultText;
+    });
+</script>
     
     <footer>
-        <p>联系我们: <a href="https://line.me/R/ti/p/%40your_line_id" style="color: white;">Line: @your_line_id</a></p>
-        <p>© 2024 互助会保险 | 版权所有</p>
+        <p>&copy; 2024 安家30專案 | 聯繫我們：<a href="line://ti/p/@yourlineid">點擊聯繫</a></p>
     </footer>
-    
+
     <script>
-        function calculate() {
-            const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value);
-            const months = parseInt(document.getElementById('months').value);
-            const deaths = parseInt(document.getElementById('deaths').value);
-            const members = parseInt(document.getElementById('members').value);
-            const fullPayment = document.getElementById('fullPayment').value;
+        document.getElementById('calcForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const months = document.getElementById('months').value;
+            const perMonth = 3500;
+            let totalPaid = months * perMonth;
+            let resultText;
 
-            const entryFee = 2000; // 契约作业费
-            const systemFee = 1500; // 系统服务费
+            if (months >= 36 && totalPaid < 300000) {
+                resultText = `您已繳${totalPaid}元，您可退回${300000 - totalPaid}元，並享有30萬元理賠。`;
+            } else if (months < 36) {
+                resultText = `您已繳${totalPaid}元，未滿三年，退還繳納金額。`;
+            } else {
+                resultText = `您已繳滿30萬元，每年將獲得祝壽金3000元。`;
+            }
 
-            const totalPaid = monthlyPayment * months; // 总缴费
-            const mutualFee = (deaths * 300000) / members; // 互助费
-            const refund = totalPaid - entryFee - mutualFee; // 预计退款
-
-            // 祝寿金逻辑
-            const anniversaryBonus = (fullPayment === "yes") ? 3000 : 0; // 仅当缴满时才有祝寿金
-
-            document.getElementById('result').innerText = 
-                `预计退款金额: $${refund.toFixed(2)} (祝寿金: $${anniversaryBonus})`;
-        }
+            document.getElementById('result').textContent = resultText;
+        });
     </script>
 </body>
 </html>
